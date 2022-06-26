@@ -10,11 +10,13 @@ import cartago.*;
 public class ArtifactWithComplexOp extends Artifact {
 	int internalCount;
 	boolean sprintOK = false;
-	Tasks[] tasks;
 	ArrayList<Tasks> tasksList;
-
+	// TODO:
+	// Fazer a parte de priorização de tarefas.
+	// Fazer ler os valores das crenças, e não do parametro
+	
 	void init() {
-		tasks = new Tasks[10];
+		defineObsProperty("prontas",0);
 		internalCount = 0;
 		tasksList = new ArrayList<Tasks>();
 

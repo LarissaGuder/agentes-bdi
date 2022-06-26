@@ -6,20 +6,7 @@ testingCapability(math.floor(math.random(5))).
 semTask(false).
 //!do_test.
 !get_task.
-// !start.
-//+step1_completed
-//  <- println("[userB] tenho tarefas.").
 
-//+step2_completed
-//	<- println("[userB] pode receber tarefas.").
-// <- getTask(codingCapability, databaseCapability, designCapability, testingCapability).
-
-
-//+!do_test
-//  <- !discover("a0");      !use_it(10).            +!use_it(NTimes) : NTimes > 0
-//  <- getTask(codingCapability, databaseCapability, designCapability, testingCapability);
-////   <-  println("[userB] updated.");
-//     !use_it(NTimes - 1).
 +step2_completed [artifact_name(Id,"a0")]
 	<- .println("[userB] pode receber tarefas.").
 
@@ -36,10 +23,6 @@ semTask(false).
 -!get_task[error(E), error_msg(M)]
 <-
     .print("error '", E, "' while executing 'start' goal: ", M).
-
-
-//+!use_it(0)
-//  <- println("[userB] completed.").
 
 +!discover(ArtName)
  <- lookupArtifact(ArtName,_).

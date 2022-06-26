@@ -19,9 +19,9 @@ liberado(off).
   <-  .println("Todas as tarefas foram finalizadas");
       .println("<SPRINT ENCERRADA>");
       .kill_agent(agent_b);
-      .kill_agent(dev2);
-      .kill_agent(agent_a);
-      .wait(100000000).
+      .kill_agent(dev2).
+      /// Professor, eu peço perdão por isso
+      // .wait(100000000).
 
 //
 
