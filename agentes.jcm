@@ -19,13 +19,14 @@ mas agentes {
 //	agent dev
 	agent agent_a
 	agent agent_b
+	agent agent_c
 
 	workspace w1 {
      artifact a0: tools.ArtifactWithComplexOp() {
-     	focused-by: agent_a, agent_b
+     	focused-by: agent_a, agent_b, agent_c
      }
 
-     agents: agent_a, agent_b     // carlos and marcos will join this workspace
+     agents: agent_a, agent_b, agent_c     // carlos and marcos will join this workspace
 
 //     debug                      // starts a GUI for this workspace
 }
