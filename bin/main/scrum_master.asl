@@ -18,8 +18,11 @@ liberado(off).
      createSprint(Tarefas);
      .println("__! Nessa sprint, precisamos baixar ", Tarefas, " !__");
      .println("__> Vou avisar o PO <__");
-     .create_agent(po,"agent_c.asl");
+     .create_agent(po,"po.asl");
      .send(po,achieve,focus(c0));
+     .create_agent(designer,"designer.asl");
+     .send(designer,achieve,focus(c0));
+     .send(designer,achieve,get_task("5"));
      .create_agent(dev_b,"dev.asl");
      .send(dev_b,achieve,focus(c0));
      .send(dev_b,achieve,get_task("5"));
@@ -42,13 +45,19 @@ liberado(off).
       // liberado(on).
 +tasks_done
   <-  .println("__> Todas as tarefas foram finalizadas <___");
-      .println("<SPRINT ENCERRADA>");
+      .println("<SPRINT ENCERRADA>").
+      // .kill_agent(dev_b);
+      // .kill_agent(dev_d).
+
++tasks_dev_done
+  <-  .println("__> Todas as tarefas de desenvolvimento foram finalizadas <___");
       .kill_agent(dev_b);
       .kill_agent(dev_d).
 
-      // .kill_agent(dev2).
-      /// Professor, eu peço perdão por isso
-      // .wait(100000000).
++tasks_design_done
+  <-  .println("__> Todas as tarefas de design foram finalizadas <___");
+      .kill_agent(designer).
+
 
 //
 
