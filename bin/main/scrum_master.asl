@@ -25,12 +25,12 @@
      .create_agent(dba,"dba.asl");
      .send(dba,achieve,focus(c0));
      .send(dba,achieve,get_task("5"));
-     .create_agent(dev_b,"dev.asl");
-     .send(dev_b,achieve,focus(c0));
-     .send(dev_b,achieve,get_task("5"));
-     .create_agent(dev_d,"dev.asl");
-     .send(dev_d,achieve,focus(c0));
-     .send(dev_d,achieve,get_task("4")).
+     .create_agent(dev_1,"dev.asl");
+     .send(dev_1,achieve,focus(c0));
+     .send(dev_1,achieve,get_task("1"));
+     .create_agent(dev_2,"dev.asl");
+     .send(dev_2,achieve,focus(c0));
+     .send(dev_2,achieve,get_task("4")).
 
 // +!do_test
 //   <- .println("[userA] preparando sprint...");
@@ -49,12 +49,12 @@
       // .kill_agent(dev_d).
 
 +timeSpent(X)
-  <- .println("TEMPO GASTO ------- ", X).
+  <- .println(X).
 
 +tasks_dev_done
   <-  .println("__> Todas as tarefas de desenvolvimento foram finalizadas <___");
-      .kill_agent(dev_b);
-      .kill_agent(dev_d).
+      .kill_agent(dev_1);
+      .kill_agent(dev_2).
 
 +tasks_design_done
   <-  .println("__> Todas as tarefas de design foram finalizadas <___");

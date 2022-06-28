@@ -1,5 +1,6 @@
 +!focus(C)
    <- lookupArtifact(C,Id);
+	 .println("Entrei para o squad");
     focus(Id).
 
 +!get_task(D)

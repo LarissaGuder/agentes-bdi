@@ -33,7 +33,7 @@ public class Board extends Artifact {
 		finalizadas[0] = false;
 		finalizadas[1] = false;
 		finalizadas[2] = false;
-		defineObsProperty("timeSpent", 0);
+		
 
 	}
 
@@ -68,11 +68,7 @@ public class Board extends Artifact {
 		if (checkIfDone()) {
 			finalizadas[0] = true;
 			signal("tasks_dev_done");
-			if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
-				ObsProperty prop = getObsProperty("timeSpent");
-				prop.updateValue(timeSpent);
-				signal("tasks_done");
-			}
+			checkIfAllDone();
 		}
 		// String tarefaFeita = "";
 		// Ordenar, pegar por prioridade.
@@ -97,11 +93,8 @@ public class Board extends Artifact {
 		if (checkIfDoneDesign()) {
 			finalizadas[1] = true;
 			signal("tasks_design_done");
-			if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
-				ObsProperty prop = getObsProperty("timeSpent");
-				prop.updateValue(timeSpent);
-				signal("tasks_done");
-			}
+			checkIfAllDone();
+
 		}
 		// Ordenar, pegar por prioridade.
 		// Calcular o tempo
@@ -124,11 +117,8 @@ public class Board extends Artifact {
 		if (checkIfDoneDatabase()) {
 			finalizadas[2] = true;
 			signal("tasks_dba_done");
-			if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
-				ObsProperty prop = getObsProperty("timeSpent");
-				prop.updateValue(timeSpent);
-				signal("tasks_done");
-			}
+			checkIfAllDone();
+
 		}
 		// Ordenar, pegar por prioridade.
 		// Calcular o tempo
@@ -204,17 +194,19 @@ public class Board extends Artifact {
 		return givenList.get(rand.nextInt(givenList.size()));
 	}
 
-	private boolean checkIfAllDone() {
-		if (!checkIfDone()) {
-			return false;
-		} else if (!checkIfDoneDesign()) {
-			return false;
-		} else if (!checkIfDoneDatabase()) {
-			return false;
-		} else {
-			return true;
-		}
+	private void checkIfAllDone() {
+		if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
+			defineObsProperty("timeSpent", 0);
+			ObsProperty prop = getObsProperty("timeSpent");
+			double val = timeSpent;
+			val = val * 100;
+			val = (double) ((int) val);
+			val = val / 100;
 
+			prop.updateValue(
+					"O tempo disponivel para a SPRINT era de " + sizeSprint + " o tempo gasto foi de " + val);
+			signal("tasks_done");
+		}
 	}
 
 	private boolean checkIfDone() {
