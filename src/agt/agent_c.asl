@@ -1,19 +1,16 @@
-// !create_and_use.
-//
-// +!create_and_use : true
-//   <- checkFinish;
-//   .wait(100);
-//   !create_and_use.
-// discover("c0").
++!focus(C)
+   <- lookupArtifact(C,Id);
+	 	.println("---> Boa sorte a todos, eu sou o PO <---", C);
+    focus(Id).
 
-+tasks_done [artifact_name(Id,"c0")]
-  <-  .println("PO > Entrega recebida").
++tasks_done
+  <-  .println("---> Entrega recebida <---").
 
-+!discover(ArtName)
- <- lookupArtifact(ArtName,_).
--!discover(ArtName)
- <- .wait(10);
-    !discover(ArtName).
+
+// +!end(T) : T <= 0 <- .stopMAS.
+// +!end(T) : true
+//    <- .print("The MAS will stop in ",T/1000," seconds!");
+//       .wait(2000); !end(T-2000).
 
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }

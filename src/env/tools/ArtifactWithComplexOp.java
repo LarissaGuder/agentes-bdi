@@ -38,7 +38,6 @@ public class ArtifactWithComplexOp extends Artifact {
 		// TO DO : ADICIONAR CRIA��O DE AGENTES
 		// ver oq precisa qui para executar
 		// await("sprintOKGuard", true);
-
 		signal("step2_completed");
 	}
 
@@ -59,29 +58,30 @@ public class ArtifactWithComplexOp extends Artifact {
 	// }
 
 	@OPERATION
-	void getTaskDev(String coding, OpFeedbackParam tarefa) {
+	void getTaskDev(String coding, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
 		signal("step2_completed");
 
 		if (checkIfDone()) {
 			signal("tasks_done");
 			System.out.println("TEMPO GASTO -= ====== " + timeSpent);
 		}
+		// String tarefaFeita = "";
 		// Ordenar, pegar por prioridade.
 		// Calcular o tempo
 		// Para os pontos, dividir pela habilidade, isso vai dar o tempo.
 		for (Tasks task : tasksListDev) {
 			if (task != null && task.getStatus() == "TODO") {
-				System.out.print(">>>> BUSCANDO TAREFAS <<<<<<<<");
-				// if (task.getTaskSizeOnCoding() <= Integer.parseInt(coding)) {
 					timeSpent += task.getTaskValue() / Integer.parseInt(coding);
-					System.out.println("Fazendo tarefa " + task.getTaskName());
+					tarefa.set(task.getTaskName());
 					task.setStatus("DONE");
 					break;
 				// }
 			}
 		}
 		int habilidadeNova = Integer.parseInt(coding) + 1;
-		tarefa.set("" + habilidadeNova);
+		habilidade.set("" + habilidadeNova);
+
+
 	}
 
 	@OPERATION
@@ -95,10 +95,8 @@ public class ArtifactWithComplexOp extends Artifact {
 		// Para os pontos, dividir pela habilidade, isso vai dar o tempo.
 		for (Tasks task : tasksListDesign) {
 			if (task != null && task.getStatus() == "TODO") {
-				System.out.print(">>>> BUSCANDO TAREFAS <<<<<<<<");
 				// if (task.getTaskSizeOnCoding() <= Integer.parseInt(coding)) {
 					timeSpent += task.getTaskValue() / Integer.parseInt(coding);
-					System.out.println("Fazendo tarefa " + task.getTaskName());
 					task.setStatus("DONE");
 					// break;
 				// }
@@ -122,7 +120,6 @@ public class ArtifactWithComplexOp extends Artifact {
 				System.out.print(">>>> BUSCANDO TAREFAS <<<<<<<<");
 				// if (task.getTaskSizeOnCoding() <= Integer.parseInt(coding)) {
 					timeSpent += task.getTaskValue() / Integer.parseInt(coding);
-					System.out.println("Fazendo tarefa " + task.getTaskName());
 					task.setStatus("DONE");
 					// break;
 				// }
@@ -182,34 +179,6 @@ public class ArtifactWithComplexOp extends Artifact {
 		}
 		tarefas.set(pontosBaixar + " pontos.");
 
-		// tasks[1] = new Tasks();
-		// tasks[1].setStatus("DONE");
-		// tasks[1].setTaskName("task 01");
-		// tasks[1].setTaskSizeOnCoding((int) Math.floor(Math.random()*(5-1+1)+1));
-		// tasks[1].setTaskSizeOnDatabase((int) Math.floor(Math.random()*(5-1+1)+1));
-		// tasks[1].setTaskSizeOnDesign((int) Math.floor(Math.random()*(5-1+1)+1));
-		// tasks[1].setTaskSizeOnTesting((int) Math.floor(Math.random()*(5-1+1)+1));
-		// tasks[1].setTaskValue((int) Math.floor(Math.random()*(5-1+1)+1));
-		// System.out.print("acabou de criar as tarefas");
-		// sprintOK = true;
-		// for (Tasks tasks2 : tasks) {
-		// tasks2 = new Tasks();
-		// tasks2.setStatus("TODO");
-		// tasks2.setTaskName("name01");
-		// tasks2.setTaskSizeOnCoding(1);
-		// tasks2.setTaskSizeOnDatabase(0);
-		// tasks2.setTaskSizeOnDesign(3);
-		// tasks2.setTaskSizeOnTesting(0);
-		// tasks2.setTaskValue(2);
-		// System.out.print(tasks2.getStatus());
-		// }
-		// for (Tasks task : tasks) {
-		// if(task != null) {
-		// System.out.println(task.getStatus());
-		// } else {
-		// System.out.println("Sem tarefas");
-		// }
-		// }
 	}
 	private int getStoryPoint() {
 		List<Integer> givenList = Arrays.asList(1, 2, 3, 5, 8, 13, 20, 40, 100);
@@ -222,7 +191,6 @@ public class ArtifactWithComplexOp extends Artifact {
 		for (Tasks tasks2 : tasksListDev) {
 			if (tasks2 != null && tasks2.getStatus() != "DONE") {
 				allDone = false;
-				System.out.println("TASK N PRONTA " + tasks2.getTaskName() + tasks2.getStatus());
 				break;
 			}
 		}
@@ -234,7 +202,6 @@ public class ArtifactWithComplexOp extends Artifact {
 		for (Tasks tasks2 : tasksListDesign) {
 			if (tasks2 != null && tasks2.getStatus() != "DONE") {
 				allDone = false;
-				System.out.println("TASK N PRONTA " + tasks2.getTaskName() + tasks2.getStatus());
 				break;
 			}
 		}
@@ -246,7 +213,6 @@ public class ArtifactWithComplexOp extends Artifact {
 		for (Tasks tasks2 : tasksListDatabase) {
 			if (tasks2 != null && tasks2.getStatus() != "DONE") {
 				allDone = false;
-				System.out.println("TASK N PRONTA " + tasks2.getTaskName() + tasks2.getStatus());
 				break;
 			}
 		}

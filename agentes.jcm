@@ -17,9 +17,9 @@ mas agentes {
 //    agent sample_agent
 //    agent scrum_master
 //	agent dev
-	agent agent_a
+	agent scrum_master
 //	agent agent_b
-	agent agent_c
+//	agent agent_c
 
 	/* workspace w1 {
      artifact a0: tools.ArtifactWithComplexOp() {

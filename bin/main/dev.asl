@@ -1,52 +1,24 @@
-// Agent dev in project agentes
++!focus(C)
+   <- lookupArtifact(C,Id);
+    focus(Id).
 
-/* Initial beliefs and rules */
-codingCapability(math.floor(math.random(5))).
-databaseCapability(math.floor(math.random(5))).
-designCapability(math.floor(math.random(5))).
-testingCapability(math.floor(math.random(5))).
-//count(8).
-
-/* Initial goals */
-
-!start.
-!observe.
-//!do_task.
-
-/* Plans */
++!get_task(D)
+	<- getTaskDev(D, Habilidade, Tarefa);
+	.println("|> Task ", Tarefa, " finalizada <| ");
+	// Tem que descansar, ninguém é de ferro
+	.wait(50);
+	!get_task(Habilidade).
 
 
-+!start : true <- .print("eu sou o dev").
+-!get_task[error(E), error_msg(M)]
+<-
+    .print("error '", E, "' while executing 'start' goal: ", M).
 
-+!observe : true
-  <- ?myTool(C);  // discover the tool
-     focus(C).
-
-+task(V)
-  <- println("observed new value: ",V).
-
-+tick[artifact_name(Id,"c0")]
-  <- println("perceived a tick").
-
-+?myTool(TaskId): true
-  <- lookupArtifact("c0",TaskId).
-
--?myTool(TaskId): true
-  <- .wait(1);
-     ?myTool(TaskId).
-
-//+!do_task(A)
-//  <- lookupArtifact("c0",TaskId)
-//     doTask("DONE").
-//     sumAndSub(0.5, 1.5, NewSum, Sub);
-//     println("The new sum is ",NewSum," and the sub is ",Sub).
-     
-//+fact(X,Y) : X<5 <- +fact(X+1, (X+1)*Y).
-//+fact(X,Y) : X == 5 <- .print("fact 5 == ", Y).
-+codingCapability(X) : X<5 <- .print("Dev n Especialista", X). 
-+codingCapability(X) : X>5 <- .print("Dev n Especialista", X). 
-
-+codingCapability(X) : X == 5 <- .print("Dev Especialista"). 
+// +!discover(ArtName)
+//  <- lookupArtifact(ArtName,_).
+// -!discover(ArtName)
+//  <- .wait(100);
+//     !discover(ArtName).
 
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }
