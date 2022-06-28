@@ -1,42 +1,53 @@
 // Agent agent_a in project agentes
 liberado(off).
 
-!do_test.
-!observe.
+// !do_test.
+// !observe.
+!start.
 
-+!observe : true
-  <- ?myTool(C);  // discover the tool
-     focus(C).
+!create_and_use.
 
++!start
+  <- makeArtifact(c0,"tools.ArtifactWithComplexOp",[],Id);
+     focus(Id);
+     .print("Artifact created.").
 
-+!do_test
++!create_and_use : true
   <- .println("[userA] preparando sprint...");
-     createSprint;
-     // .create_agent(dev2,"agent_b.asl");
-//     update;
-	 .println("[userA] tarefas criadas ").
+      // !setupTool(Id);
+     createSprint(Tarefas);
+     .println("Nessa sprint, precisamos baixar ", Tarefas);
+     .create_agent(agent_b,"agent_b.asl");
+     .send(agent_b,achieve,focus(c0));
+     .send(agent_b,achieve,get_task("5"));
+     .create_agent(agent_d,"agent_b.asl");
+     .send(agent_d,achieve,focus(c0));
+     .send(agent_d,achieve,get_task("4")).
+
+
+
+
+// +!do_test
+//   <- .println("[userA] preparando sprint...");
+//      createSprint;
+//      // .create_agent(dev2,"agent_b.asl");
+// //     update;
+// 	 .println("[userA] tarefas criadas ").
 
 +sprint_criada
   <-  .println("[userA] sprint criada.").
       // liberado(on).
-+prontas(V)
-    <- println("---------------------------------------------: ",V).
-
 +tasks_done
   <-  .println("Todas as tarefas foram finalizadas");
       .println("<SPRINT ENCERRADA>");
-      .kill_agent(agent_b).
+      .kill_agent(agent_b);
+      .kill_agent(agent_d).
+
       // .kill_agent(dev2).
       /// Professor, eu peço perdão por isso
       // .wait(100000000).
 
 //
-+?myTool(CounterId): true
-  <- lookupArtifact("a0",CounterId).
-
--?myTool(CounterId): true
-  <- .wait(10);
-     ?myTool(CounterId).
 
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }

@@ -1,18 +1,26 @@
 //!do_test.
-!get_task.
+// !get_task.
 
-+step2_completed [artifact_name(Id,"a0")]
-	<- .println("[userB] pode receber tarefas.").
+// !discover("c0").
++!focus(C)
+   <- lookupArtifact(C,Id);
+	 	.println("Focussssss ", C);
+    focus(Id).
 
-+!get_task
-  <- .println("[userB] verificando board.");
-	// +prontas(666);
-  // !discover("a0"); /// isso aqui precisa virar um lopp
-  getTaskDev("5", Tarefa);
-  .println("[userB] tem task ", Tarefa);
+// +step2_completed
+// 	<- .println("[userB] pode receber tarefas.").
+
++!get_task(D)
+  <- .println("[userB] verificando board. " , D);
+	getTaskDev(D, Habilidade);
+	.println("[userB] tem task ", Habilidade);
+	// D = Habilidade;
+	!get_task(Habilidade).
+  // !discover("c0"); /// isso aqui precisa virar um lopp
+
   // http://jason.sourceforge.net/api/jason/stdlib/wait.html
   // .wait(50000);
-  !get_task.
+  // !get_task.
 
 -!get_task[error(E), error_msg(M)]
 <-
@@ -21,7 +29,7 @@
 // +!discover(ArtName)
 //  <- lookupArtifact(ArtName,_).
 // -!discover(ArtName)
-//  <- .wait(10);
+//  <- .wait(100);
 //     !discover(ArtName).
 
 { include("$jacamoJar/templates/common-cartago.asl") }

@@ -32,8 +32,8 @@ public class ArtifactWithComplexOp extends Artifact {
 	}
 
 	@OPERATION
-	void createSprint() {
-		createTask();
+	void createSprint(OpFeedbackParam tarefas) {
+		createTask(tarefas);
 		signal("sprint_criada");
 		// TO DO : ADICIONAR CRIA��O DE AGENTES
 		// ver oq precisa qui para executar
@@ -60,6 +60,8 @@ public class ArtifactWithComplexOp extends Artifact {
 
 	@OPERATION
 	void getTaskDev(String coding, OpFeedbackParam tarefa) {
+		signal("step2_completed");
+
 		if (checkIfDone()) {
 			signal("tasks_done");
 			System.out.println("TEMPO GASTO -= ====== " + timeSpent);
@@ -74,12 +76,12 @@ public class ArtifactWithComplexOp extends Artifact {
 					timeSpent += task.getTaskValue() / Integer.parseInt(coding);
 					System.out.println("Fazendo tarefa " + task.getTaskName());
 					task.setStatus("DONE");
-					// break;
+					break;
 				// }
 			}
 		}
-
-		tarefa.set(checkIfDone());
+		int habilidadeNova = Integer.parseInt(coding) + 1;
+		tarefa.set("" + habilidadeNova);
 	}
 
 	@OPERATION
@@ -130,12 +132,15 @@ public class ArtifactWithComplexOp extends Artifact {
 		tarefa.set(checkIfDoneDatabase());
 	}
 
-	private void createTask() {
+	private void createTask(OpFeedbackParam tarefas) {
+		int pontosBaixar = 0;
 		tasksListDev = new ArrayList<Tasks>();
 		tasksListDesign = new ArrayList<Tasks>();
 		tasksListDatabase = new ArrayList<Tasks>();
 
 		for (int i = 0; i < 10; i++) {
+			int pontos = getStoryPoint();
+			pontosBaixar += pontos;
 			Tasks aux = new Tasks();
 			aux.setStatus("TODO");
 			aux.setTaskName("task coding " + i);
@@ -143,11 +148,13 @@ public class ArtifactWithComplexOp extends Artifact {
 			aux.setTaskSizeOnDatabase(0);
 			aux.setTaskSizeOnDesign(0);
 			aux.setTaskSizeOnTesting(0);
-			aux.setTaskValue(getStoryPoint());
+			aux.setTaskValue(pontos);
 			tasksListDev.add(aux);
 		}
 
 		for (int i = 0; i < 10; i++) {
+			int pontos = getStoryPoint();
+			pontosBaixar += pontos;
 			Tasks aux = new Tasks();
 			aux.setStatus("TODO");
 			aux.setTaskName("task design " + i);
@@ -155,11 +162,14 @@ public class ArtifactWithComplexOp extends Artifact {
 			aux.setTaskSizeOnDatabase(0);
 			aux.setTaskSizeOnDesign((int) Math.floor(Math.random() * (5 - 1 + 1) + 1));
 			aux.setTaskSizeOnTesting(0);
-			aux.setTaskValue(getStoryPoint());
+			aux.setTaskValue(pontos);
 			tasksListDesign.add(aux);
 		}
 
 		for (int i = 0; i < 10; i++) {
+			int pontos = getStoryPoint();
+			pontosBaixar += pontos;
+
 			Tasks aux = new Tasks();
 			aux.setStatus("TODO");
 			aux.setTaskName("task database " + i);
@@ -167,9 +177,10 @@ public class ArtifactWithComplexOp extends Artifact {
 			aux.setTaskSizeOnDatabase(0);
 			aux.setTaskSizeOnDesign(0);
 			aux.setTaskSizeOnTesting((int) Math.floor(Math.random() * (5 - 1 + 1) + 1));
-			aux.setTaskValue(getStoryPoint());
+			aux.setTaskValue(pontos);
 			tasksListDatabase.add(aux);
 		}
+		tarefas.set(pontosBaixar + " pontos.");
 
 		// tasks[1] = new Tasks();
 		// tasks[1].setStatus("DONE");
