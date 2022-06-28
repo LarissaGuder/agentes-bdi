@@ -32,21 +32,12 @@
      .send(dev_2,achieve,focus(c0));
      .send(dev_2,achieve,get_task("4")).
 
-// +!do_test
-//   <- .println("[userA] preparando sprint...");
-//      createSprint;
-//      // .create_agent(dev2,"agent_b.asl");
-// //     update;
-// 	 .println("[userA] tarefas criadas ").
-
 +sprint_criada
   <-  .println("__> Acabei de criar a SPRINT, vou montar o squad <___").
-      // liberado(on).
+
 +tasks_done
   <-  .println("__> Todas as tarefas foram finalizadas <___");
       .println("<SPRINT ENCERRADA>").
-      // .kill_agent(dev_b);
-      // .kill_agent(dev_d).
 
 +timeSpent(X)
   <- .println(X).
@@ -54,15 +45,19 @@
 +tasks_dev_done
   <-  .println("__> Todas as tarefas de desenvolvimento foram finalizadas <___");
       .kill_agent(dev_1);
-      .kill_agent(dev_2).
+      .kill_agent(dev_2);
+      .send(po,achieve,app_dev(finalizada)).
 
 +tasks_design_done
   <-  .println("__> Todas as tarefas de design foram finalizadas <___");
-      .kill_agent(designer).
+      .kill_agent(designer);
+      .send(po,achieve,app_design(finalizada)).
+
 
 +tasks_dba_done
   <-  .println("__> Todas as tarefas de dba foram finalizadas <___");
-    .kill_agent(dba).
+    .kill_agent(dba);
+    .send(po,achieve,app_dba(finalizada)).
 
 //
 

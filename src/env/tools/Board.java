@@ -18,9 +18,7 @@ public class Board extends Artifact {
 	double timeSpent;
 	double sizeSprint;
 	boolean finalizadas[];
-	// TODO:
-	// Fazer a parte de priorização de tarefas.
-	// Fazer ler os valores das crenças, e não do parametro
+
 
 	void init() {
 		internalCount = 0;
@@ -33,7 +31,7 @@ public class Board extends Artifact {
 		finalizadas[0] = false;
 		finalizadas[1] = false;
 		finalizadas[2] = false;
-		
+
 
 	}
 
@@ -41,10 +39,7 @@ public class Board extends Artifact {
 	void createSprint(OpFeedbackParam tarefas) {
 		createTask(tarefas);
 		signal("sprint_criada");
-		// TO DO : ADICIONAR CRIA��O DE AGENTES
-		// ver oq precisa qui para executar
-		// await("sprintOKGuard", true);
-		// signal("step2_completed");
+
 	}
 
 	// @GUARD
@@ -53,27 +48,13 @@ public class Board extends Artifact {
 	// }
 
 	@OPERATION
-	void checkFinish(OpFeedbackParam pronto) {
-		if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
-			pronto.set("Sim");
-			signal("tasks_done");
-
-		} else {
-			pronto.set("Nao");
-		}
-	}
-
-	@OPERATION
 	void getTaskDev(String habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
 		if (checkIfDone()) {
 			finalizadas[0] = true;
 			signal("tasks_dev_done");
 			checkIfAllDone();
 		}
-		// String tarefaFeita = "";
-		// Ordenar, pegar por prioridade.
-		// Calcular o tempo
-		// Para os pontos, dividir pela habilidade, isso vai dar o tempo.
+
 		for (Tasks task : tasksListDev) {
 			if (task != null && task.getStatus() == "TODO") {
 				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
@@ -96,9 +77,7 @@ public class Board extends Artifact {
 			checkIfAllDone();
 
 		}
-		// Ordenar, pegar por prioridade.
-		// Calcular o tempo
-		// Para os pontos, dividir pela habilidade, isso vai dar o tempo.
+
 		for (Tasks task : tasksListDesign) {
 			if (task != null && task.getStatus() == "TODO") {
 				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
@@ -120,9 +99,6 @@ public class Board extends Artifact {
 			checkIfAllDone();
 
 		}
-		// Ordenar, pegar por prioridade.
-		// Calcular o tempo
-		// Para os pontos, dividir pela habilidade, isso vai dar o tempo.
 		for (Tasks task : tasksListDatabase) {
 			if (task != null && task.getStatus() == "TODO") {
 				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
@@ -136,13 +112,42 @@ public class Board extends Artifact {
 		habilidade.set("" + habilidadeNova);
 	}
 
+	@OPERATION
+	void validaDBA() {
+		for (Tasks task : tasksListDatabase) {
+			if (task != null && task.getStatus() == "DONE") {
+				timeSpent += 1;
+				task.setStatus("APPROVED");
+			}
+		}
+	}
+
+	@OPERATION
+	void validaDev() {
+		for (Tasks task : tasksListDev) {
+			if (task != null && task.getStatus() == "DONE") {
+				timeSpent += 2;
+				task.setStatus("APPROVED");
+			}
+		}
+	}
+
+	@OPERATION
+	void validaDesign() {
+		for (Tasks task : tasksListDesign) {
+			if (task != null && task.getStatus() == "DONE") {
+				timeSpent += 3;
+				task.setStatus("APPROVED");
+			}
+		}
+	}
 	private void createTask(OpFeedbackParam tarefas) {
 		int pontosBaixar = 0;
 		tasksListDev = new ArrayList<Tasks>();
 		tasksListDesign = new ArrayList<Tasks>();
 		tasksListDatabase = new ArrayList<Tasks>();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 200; i++) {
 			int pontos = getStoryPoint();
 			pontosBaixar += pontos;
 			Tasks aux = new Tasks();
@@ -156,7 +161,7 @@ public class Board extends Artifact {
 			tasksListDev.add(aux);
 		}
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 200; i++) {
 			int pontos = getStoryPoint();
 			pontosBaixar += pontos;
 			Tasks aux = new Tasks();
@@ -170,7 +175,7 @@ public class Board extends Artifact {
 			tasksListDesign.add(aux);
 		}
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 100; i++) {
 			int pontos = getStoryPoint();
 			pontosBaixar += pontos;
 
@@ -198,6 +203,7 @@ public class Board extends Artifact {
 		if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
 			defineObsProperty("timeSpent", 0);
 			ObsProperty prop = getObsProperty("timeSpent");
+			
 			double val = timeSpent;
 			val = val * 100;
 			val = (double) ((int) val);
