@@ -4,7 +4,7 @@
 
 +!get_task(D)
 	<- getTaskDesign(D, Habilidade, Tarefa);
-	.println("|> Task ", Tarefa, " finalizada <| ");
+	// .println("|> Task ", Tarefa, " finalizada <| ");
 	// Tem que descansar, ninguém é de ferro
 	.wait(50);
 	!get_task(Habilidade).

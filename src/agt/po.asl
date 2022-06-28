@@ -1,6 +1,6 @@
 +!focus(C)
    <- lookupArtifact(C,Id);
-	 	.println("---> Boa sorte a todos, eu sou o PO <---", C);
+	 	.println("---> Boa sorte a todos, eu sou o PO <---");
     focus(Id).
 
 +tasks_done

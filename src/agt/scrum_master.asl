@@ -1,11 +1,10 @@
 // Agent agent_a in project agentes
-liberado(off).
-
 // !do_test.
 // !observe.
 !start.
 
 !create_and_use.
+// !check_board.
 
 +!start
   <- makeArtifact(c0,"tools.Board",[],Id);
@@ -23,15 +22,15 @@ liberado(off).
      .create_agent(designer,"designer.asl");
      .send(designer,achieve,focus(c0));
      .send(designer,achieve,get_task("5"));
+     .create_agent(dba,"dba.asl");
+     .send(dba,achieve,focus(c0));
+     .send(dba,achieve,get_task("5"));
      .create_agent(dev_b,"dev.asl");
      .send(dev_b,achieve,focus(c0));
      .send(dev_b,achieve,get_task("5"));
      .create_agent(dev_d,"dev.asl");
      .send(dev_d,achieve,focus(c0));
      .send(dev_d,achieve,get_task("4")).
-
-
-
 
 // +!do_test
 //   <- .println("[userA] preparando sprint...");
@@ -49,6 +48,9 @@ liberado(off).
       // .kill_agent(dev_b);
       // .kill_agent(dev_d).
 
++timeSpent(X)
+  <- .println("TEMPO GASTO ------- ", X).
+
 +tasks_dev_done
   <-  .println("__> Todas as tarefas de desenvolvimento foram finalizadas <___");
       .kill_agent(dev_b);
@@ -58,6 +60,9 @@ liberado(off).
   <-  .println("__> Todas as tarefas de design foram finalizadas <___");
       .kill_agent(designer).
 
++tasks_dba_done
+  <-  .println("__> Todas as tarefas de dba foram finalizadas <___");
+    .kill_agent(dba).
 
 //
 

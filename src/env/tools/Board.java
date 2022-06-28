@@ -17,6 +17,7 @@ public class Board extends Artifact {
 	ArrayList<Tasks> tasksListDatabase;
 	double timeSpent;
 	double sizeSprint;
+	boolean finalizadas[];
 	// TODO:
 	// Fazer a parte de priorização de tarefas.
 	// Fazer ler os valores das crenças, e não do parametro
@@ -28,6 +29,11 @@ public class Board extends Artifact {
 		tasksListDev = new ArrayList<Tasks>();
 		tasksListDesign = new ArrayList<Tasks>();
 		tasksListDatabase = new ArrayList<Tasks>();
+		finalizadas = new boolean[3];
+		finalizadas[0] = false;
+		finalizadas[1] = false;
+		finalizadas[2] = false;
+		defineObsProperty("timeSpent", 0);
 
 	}
 
@@ -46,22 +52,27 @@ public class Board extends Artifact {
 	// return this.sprintOK;
 	// }
 
-	// @OPERATION
-	// void checkFinish() {
-	// ObsProperty prop = getObsProperty("prontas");
-	// for (Tasks tasks2 : tasksListDev) {
-	// if (tasks2 != null && tasks2.getStatus() != "DONE") {
-	// prop.updateValue(2222);
-	// break;
-	// }
-	// }
-	// }
+	@OPERATION
+	void checkFinish(OpFeedbackParam pronto) {
+		if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
+			pronto.set("Sim");
+			signal("tasks_done");
+
+		} else {
+			pronto.set("Nao");
+		}
+	}
 
 	@OPERATION
 	void getTaskDev(String habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
 		if (checkIfDone()) {
+			finalizadas[0] = true;
 			signal("tasks_dev_done");
-			// System.out.println("TEMPO GASTO -= ====== " + timeSpent);
+			if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
+				ObsProperty prop = getObsProperty("timeSpent");
+				prop.updateValue(timeSpent);
+				signal("tasks_done");
+			}
 		}
 		// String tarefaFeita = "";
 		// Ordenar, pegar por prioridade.
@@ -69,14 +80,14 @@ public class Board extends Artifact {
 		// Para os pontos, dividir pela habilidade, isso vai dar o tempo.
 		for (Tasks task : tasksListDev) {
 			if (task != null && task.getStatus() == "TODO") {
-				timeSpent += task.getTaskValue() / Integer.parseInt(habilidadeAtual);
+				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
 				tarefa.set(task.getTaskName());
 				task.setStatus("DONE");
 				break;
 				// }
 			}
 		}
-		int habilidadeNova = Integer.parseInt(habilidadeAtual) + 1;
+		double habilidadeNova = Double.parseDouble(habilidadeAtual) + 0.01 * (1 / Double.parseDouble(habilidadeAtual));
 		habilidade.set("" + habilidadeNova);
 
 	}
@@ -84,46 +95,54 @@ public class Board extends Artifact {
 	@OPERATION
 	void getTaskDesign(String habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
 		if (checkIfDoneDesign()) {
+			finalizadas[1] = true;
 			signal("tasks_design_done");
-			// System.out.println("TEMPO GASTO -= ====== " + timeSpent);
+			if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
+				ObsProperty prop = getObsProperty("timeSpent");
+				prop.updateValue(timeSpent);
+				signal("tasks_done");
+			}
 		}
 		// Ordenar, pegar por prioridade.
 		// Calcular o tempo
 		// Para os pontos, dividir pela habilidade, isso vai dar o tempo.
 		for (Tasks task : tasksListDesign) {
 			if (task != null && task.getStatus() == "TODO") {
-				timeSpent += task.getTaskValue() / Integer.parseInt(habilidadeAtual);
+				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
 				tarefa.set(task.getTaskName());
 				task.setStatus("DONE");
 				break;
 				// }
 			}
 		}
-		int habilidadeNova = Integer.parseInt(habilidadeAtual) + 1;
+		double habilidadeNova = Double.parseDouble(habilidadeAtual) + 0.01 * (1 / Double.parseDouble(habilidadeAtual));
 		habilidade.set("" + habilidadeNova);
 	}
 
 	@OPERATION
 	void getTaskDatabase(String habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
 		if (checkIfDoneDatabase()) {
-			signal("tasks_done");
-			System.out.println("TEMPO GASTO -= ====== " + timeSpent);
+			finalizadas[2] = true;
+			signal("tasks_dba_done");
+			if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
+				ObsProperty prop = getObsProperty("timeSpent");
+				prop.updateValue(timeSpent);
+				signal("tasks_done");
+			}
 		}
 		// Ordenar, pegar por prioridade.
 		// Calcular o tempo
 		// Para os pontos, dividir pela habilidade, isso vai dar o tempo.
 		for (Tasks task : tasksListDatabase) {
 			if (task != null && task.getStatus() == "TODO") {
-				System.out.print(">>>> BUSCANDO TAREFAS <<<<<<<<");
-				// if (task.getTaskSizeOnCoding() <= Integer.parseInt(coding)) {
-				timeSpent += task.getTaskValue() / Integer.parseInt(habilidadeAtual);
+				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
 				tarefa.set(task.getTaskName());
 				task.setStatus("DONE");
-				// break;
+				break;
 				// }
 			}
 		}
-		int habilidadeNova = Integer.parseInt(habilidadeAtual) + 1;
+		double habilidadeNova = Double.parseDouble(habilidadeAtual) + 0.01 * (1 / Double.parseDouble(habilidadeAtual));
 		habilidade.set("" + habilidadeNova);
 	}
 
@@ -185,8 +204,6 @@ public class Board extends Artifact {
 		return givenList.get(rand.nextInt(givenList.size()));
 	}
 
-
-
 	private boolean checkIfAllDone() {
 		if (!checkIfDone()) {
 			return false;
@@ -210,7 +227,7 @@ public class Board extends Artifact {
 		}
 		return allDone;
 	}
-	
+
 	private boolean checkIfDoneDesign() {
 		boolean allDone = true;
 		for (Tasks tasks2 : tasksListDesign) {
