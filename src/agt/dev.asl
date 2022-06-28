@@ -2,9 +2,10 @@
    <- lookupArtifact(C,Id);
 	 .println("Entrei para o squad");
     focus(Id).
-
+// verificar se tem tarefa antes
 +!get_task(D)
 	<- getTaskDev(D, Habilidade, Tarefa);
+	// .println(">>>>>>>>> HABBBB ", D);
 	// Tem que descansar, ninguém é de ferro
 	.wait(50);
 	!get_task(Habilidade).

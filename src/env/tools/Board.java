@@ -19,7 +19,6 @@ public class Board extends Artifact {
 	double sizeSprint;
 	boolean finalizadas[];
 
-
 	void init() {
 		internalCount = 0;
 		timeSpent = 0;
@@ -31,7 +30,6 @@ public class Board extends Artifact {
 		finalizadas[0] = false;
 		finalizadas[1] = false;
 		finalizadas[2] = false;
-
 
 	}
 
@@ -48,7 +46,7 @@ public class Board extends Artifact {
 	// }
 
 	@OPERATION
-	void getTaskDev(String habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
+	void getTaskDev(double habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
 		if (checkIfDone()) {
 			finalizadas[0] = true;
 			signal("tasks_dev_done");
@@ -57,20 +55,20 @@ public class Board extends Artifact {
 
 		for (Tasks task : tasksListDev) {
 			if (task != null && task.getStatus() == "TODO") {
-				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
+				timeSpent += task.getTaskValue() / habilidadeAtual;
 				tarefa.set(task.getTaskName());
 				task.setStatus("DONE");
 				break;
 				// }
 			}
 		}
-		double habilidadeNova = Double.parseDouble(habilidadeAtual) + 0.01 * (1 / Double.parseDouble(habilidadeAtual));
-		habilidade.set("" + habilidadeNova);
+		double habilidadeNova = habilidadeAtual + 0.01 * (1 / habilidadeAtual);
+		habilidade.set(habilidadeNova);
 
 	}
 
 	@OPERATION
-	void getTaskDesign(String habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
+	void getTaskDesign(double habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
 		if (checkIfDoneDesign()) {
 			finalizadas[1] = true;
 			signal("tasks_design_done");
@@ -80,19 +78,19 @@ public class Board extends Artifact {
 
 		for (Tasks task : tasksListDesign) {
 			if (task != null && task.getStatus() == "TODO") {
-				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
+				timeSpent += task.getTaskValue() / habilidadeAtual;
 				tarefa.set(task.getTaskName());
 				task.setStatus("DONE");
 				break;
 				// }
 			}
 		}
-		double habilidadeNova = Double.parseDouble(habilidadeAtual) + 0.01 * (1 / Double.parseDouble(habilidadeAtual));
-		habilidade.set("" + habilidadeNova);
+		double habilidadeNova = habilidadeAtual + 0.01 * (1 / habilidadeAtual);
+		habilidade.set(habilidadeNova);
 	}
 
 	@OPERATION
-	void getTaskDatabase(String habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
+	void getTaskDatabase(double habilidadeAtual, OpFeedbackParam habilidade, OpFeedbackParam tarefa) {
 		if (checkIfDoneDatabase()) {
 			finalizadas[2] = true;
 			signal("tasks_dba_done");
@@ -101,15 +99,15 @@ public class Board extends Artifact {
 		}
 		for (Tasks task : tasksListDatabase) {
 			if (task != null && task.getStatus() == "TODO") {
-				timeSpent += task.getTaskValue() / Double.parseDouble(habilidadeAtual);
+				timeSpent += task.getTaskValue() / habilidadeAtual;
 				tarefa.set(task.getTaskName());
 				task.setStatus("DONE");
 				break;
 				// }
 			}
 		}
-		double habilidadeNova = Double.parseDouble(habilidadeAtual) + 0.01 * (1 / Double.parseDouble(habilidadeAtual));
-		habilidade.set("" + habilidadeNova);
+		double habilidadeNova = habilidadeAtual + 0.01 * (1 / habilidadeAtual);
+		habilidade.set(habilidadeNova);
 	}
 
 	@OPERATION
@@ -126,7 +124,7 @@ public class Board extends Artifact {
 	void validaDev() {
 		for (Tasks task : tasksListDev) {
 			if (task != null && task.getStatus() == "DONE") {
-				timeSpent += 2;
+				timeSpent += 1;
 				task.setStatus("APPROVED");
 			}
 		}
@@ -136,17 +134,18 @@ public class Board extends Artifact {
 	void validaDesign() {
 		for (Tasks task : tasksListDesign) {
 			if (task != null && task.getStatus() == "DONE") {
-				timeSpent += 3;
+				timeSpent += 1;
 				task.setStatus("APPROVED");
 			}
 		}
 	}
+
 	private void createTask(OpFeedbackParam tarefas) {
 		int pontosBaixar = 0;
 		tasksListDev = new ArrayList<Tasks>();
 		tasksListDesign = new ArrayList<Tasks>();
 		tasksListDatabase = new ArrayList<Tasks>();
-
+		int ue = 0;
 		for (int i = 0; i < 200; i++) {
 			int pontos = getStoryPoint();
 			pontosBaixar += pontos;
@@ -203,7 +202,7 @@ public class Board extends Artifact {
 		if (finalizadas[0] == true && finalizadas[1] == true && finalizadas[2] == true) {
 			defineObsProperty("timeSpent", 0);
 			ObsProperty prop = getObsProperty("timeSpent");
-			
+
 			double val = timeSpent;
 			val = val * 100;
 			val = (double) ((int) val);

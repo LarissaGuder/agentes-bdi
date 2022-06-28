@@ -21,16 +21,16 @@
      .send(po,achieve,focus(c0));
      .create_agent(designer,"designer.asl");
      .send(designer,achieve,focus(c0));
-     .send(designer,achieve,get_task("5"));
+     .send(designer,achieve,get_task(math.ceil((math.random(5)))));
      .create_agent(dba,"dba.asl");
      .send(dba,achieve,focus(c0));
-     .send(dba,achieve,get_task("5"));
+     .send(dba,achieve,get_task(math.ceil((math.random(5)))));
      .create_agent(dev_1,"dev.asl");
      .send(dev_1,achieve,focus(c0));
-     .send(dev_1,achieve,get_task("1"));
+     .send(dev_1,achieve,get_task(math.ceil((math.random(5)))));
      .create_agent(dev_2,"dev.asl");
      .send(dev_2,achieve,focus(c0));
-     .send(dev_2,achieve,get_task("4")).
+     .send(dev_2,achieve,get_task(math.ceil((math.random(5))))).
 
 +sprint_criada
   <-  .println("__> Acabei de criar a SPRINT, vou montar o squad <___").

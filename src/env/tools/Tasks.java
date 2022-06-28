@@ -18,6 +18,7 @@ public class Tasks {
 	int taskValue = 0;
 	int workingAgentOne = 0;
 	int workingAgentTwo = 0;
+	int userStory = 0;
 	String status = "";
 
 
@@ -100,6 +101,14 @@ public class Tasks {
 
 	public void setWorkingAgentTwo(int workingAgentTwo) {
 		this.workingAgentTwo = workingAgentTwo;
+	}
+
+	public int getUserStory() {
+		return userStory;
+	}
+
+	public void setUserStory(int userStory) {
+		this.userStory = userStory;
 	}
 
 
