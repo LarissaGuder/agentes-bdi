@@ -9,7 +9,7 @@ import java.util.Random;
 
 import cartago.*;
 
-public class ArtifactWithComplexOp extends Artifact {
+public class Board extends Artifact {
 	int internalCount;
 	boolean sprintOK = false;
 	ArrayList<Tasks> tasksListDev;

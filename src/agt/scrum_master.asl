@@ -8,7 +8,7 @@ liberado(off).
 !create_and_use.
 
 +!start
-  <- makeArtifact(c0,"tools.ArtifactWithComplexOp",[],Id);
+  <- makeArtifact(c0,"tools.Board",[],Id);
      focus(Id);
      .println("__> Artefato criado <__").
 
