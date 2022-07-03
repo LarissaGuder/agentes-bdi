@@ -15,7 +15,7 @@
   <- .println("__> Preparando SPRINT <__");
       // !setupTool(Id);
      createSprint(Tarefas);
-     .println("__! Nessa sprint, precisamos baixar ", Tarefas, " !__");
+     .println("__! Nessa entrega, precisamos baixar ", Tarefas, " !__");
      .println("__> Vou avisar o PO <__");
      .create_agent(po,"po.asl");
      .send(po,achieve,focus(c0));

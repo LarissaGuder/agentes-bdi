@@ -5,7 +5,7 @@
 // verificar se tem tarefa antes
 +!get_task(D)
 	<- getTaskDev(D, Habilidade, Tarefa);
-	// .println(">>>>>>>>> HABBBB ", D);
+	// .println("Tenho minha capacidade ", D, " fiz a tarefa ", Tarefa);
 	// Tem que descansar, ninguém é de ferro
 	.wait(50);
 	!get_task(Habilidade).

@@ -52,7 +52,6 @@ public class Board extends Artifact {
 			signal("tasks_dev_done");
 			checkIfAllDone();
 		}
-
 		for (Tasks task : tasksListDev) {
 			if (task != null && task.getStatus() == "TODO") {
 				timeSpent += task.getTaskValue() / habilidadeAtual;
@@ -62,9 +61,8 @@ public class Board extends Artifact {
 				// }
 			}
 		}
-		double habilidadeNova = habilidadeAtual + 0.01 * (1 / habilidadeAtual);
+		double habilidadeNova = (habilidadeAtual + 0.01 * (1 / habilidadeAtual));
 		habilidade.set(habilidadeNova);
-
 	}
 
 	@OPERATION
@@ -85,7 +83,7 @@ public class Board extends Artifact {
 				// }
 			}
 		}
-		double habilidadeNova = habilidadeAtual + 0.01 * (1 / habilidadeAtual);
+		double habilidadeNova = Math.ceil(habilidadeAtual + 0.01 * (1 / habilidadeAtual));
 		habilidade.set(habilidadeNova);
 	}
 
@@ -207,9 +205,12 @@ public class Board extends Artifact {
 			val = val * 100;
 			val = (double) ((int) val);
 			val = val / 100;
+			int numSprints = (int) Math.ceil(val / sizeSprint);
 
 			prop.updateValue(
-					"O tempo disponivel para a SPRINT era de " + sizeSprint + " o tempo gasto foi de " + val);
+					"O tempo disponivel para cada SPRINT foi de " + sizeSprint + " o tempo gasto foi de " + val
+							+ ". Para essa entrega, foram necessarias "
+							+ numSprints + " sprints");
 			signal("tasks_done");
 		}
 	}
@@ -245,5 +246,12 @@ public class Board extends Artifact {
 			}
 		}
 		return allDone;
+	}
+
+	private double round(double val) {
+		val = val * 100;
+		val = (double) ((int) val);
+		val = val / 100;
+		return val;
 	}
 }
